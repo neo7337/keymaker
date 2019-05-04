@@ -9,4 +9,19 @@ public class HomeController {
     public String homePage() {
         return "index";
     }
+
+    @GetMapping("/keygen")
+    public String keyGen() {
+        return "keyGen";
+    }
+
+    @GetMapping("/gpsCode")
+    public String gpsCode() {
+        return "gpsCode";
+    }
+
+    @GetMapping("/promoCode")
+    public String promoCode() {
+        return "promoCode";
+    }
 }
