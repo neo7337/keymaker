@@ -54,6 +54,11 @@
                 </fieldset>
             </form>
         </div>
+        <div class="row" id="generateAuthkey">
+            <form id="authKey" name="authKey" method="post" style="padding:12px">
+                <input type="submit" class="btn btn-primary btn-block" value="Generate Auth Key">
+            </form>
+        </div>
     </div>
 
     <div id="footer">
@@ -83,6 +88,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         document.getElementById("validateOTP").style.display = "none";
+        document.getElementById("generateAuthkey").style.display = "none";
 
         $("#generateOtp").submit(function (event) {
             //stop submit the form, we will post it manually.
@@ -119,10 +125,41 @@
             //stop submit the form, we will post it manually.
             event.preventDefault();
             var data = 'otpnum=' + $("#otpnum").val();
-            alert(data);
+            //alert(data);
+            if (undefined !== $("#email").val() && $("#email").val() !== null && $("#email").val() !== '') {
+                $.ajax({
+                    type: "GET",
+                    url: "/validateOtp",
+                    data: data,
+                    dataType: 'text',
+                    cache: false,
+                    timeout: 600000,
+                    success: function (response) {
+                        if (response === 'Success') {
+                            alert("OTP Validated successfully")
+                            document.getElementById("generateAuthKey").style.display = "block";
+                        } else {
+                            alert("OTP Invalid. Please Enter a valid OTP to generate AuthKey");
+                        }
+                        alert(response);
+                    },
+                    error: function (xhr, status, error) {
+                        alert(xhr.responseText);
+                    }
+                });
+            } else {
+                alert("Please enter an OTP for validation");
+            }
+        });
+
+        $("#authkey").submit(function (event) {
+            //stop submit the form, we will post it manually.
+            event.preventDefault();
+            data = '';
+            //alert(data);
             $.ajax({
                 type: "GET",
-                url: "/validateOtp",
+                url: "/authkeyGenerate",
                 data: data,
                 dataType: 'text',
                 cache: false,

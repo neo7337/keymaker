@@ -27,4 +27,8 @@ public class User implements Serializable {
         this.otp = otp;
     }
 
+    public String getOTP() {
+        return otp;
+    }
+
 }

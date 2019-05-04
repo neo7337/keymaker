@@ -51,21 +51,21 @@ public class OtpController {
 
     @RequestMapping(value = "/validateOtp", method = RequestMethod.GET)
     public @ResponseBody String validateOtp(@RequestParam("otpnum") int otpnum) {
-        final String SUCCESS = "Entered Otp is valid";
-        final String FAIL = "Entered Otp is NOT valid. Please Retry!";
-        String username = "";
+        final String SUCCESS = "Success";
+        final String FAIL = "Unsuccessful";
         logger.info(" Otp Number : " + otpnum);
 
-        boolean result = repository.equals(String.valueOf(otpnum));
+        for (User user : repository.findAll()) {
+            System.out.println(user.getOTP());
+            if (String.valueOf(otpnum).equalsIgnoreCase(user.getOTP())) {
+                return SUCCESS;
+            }
+        }
+        return FAIL;
+    }
 
-        logger.info(String.valueOf(result));
-        // Validate the Otp
-        /*
-         * if (otpnum >= 0) { int serverOtp = otpService.getOtp(username); if (serverOtp
-         * > 0) { if (otpnum == serverOtp) { otpService.clearOTP(username); return
-         * ("Entered Otp is valid"); } else { return SUCCESS; } } else { return FAIL; }
-         * } else { return FAIL; }
-         */
-        return SUCCESS;
+    @RequestMapping(value = "/authkeyGenerate", method = RequestMethod.GET)
+    public String generateAuthKey() {
+        return "generateKey";
     }
 }
