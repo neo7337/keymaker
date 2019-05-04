@@ -18,19 +18,41 @@
             <h1>Welcome to key generator</h1>
             <h4>Generating keys for your every lock.</h4>
             <hr>
-
         </div>
-        <div class='row'>
+        <div class='row' id="generateOTP">
             <div class='col-sm-12'>
-                <form style="padding:12px">
-
+                <form id="generateOtp" name="generateOTP" method="post" style="padding:12px">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <input type="text" class="form-control" id="email" placeholder="Enter Email" maxlength="25">
+                        </div>
+                    </div>
+                    <br />
+                    <button type="submit" class="btn btn-primary" id="fetch">Generate OTP</button>
+                    <div class="panel-body">
+                        <ul class="list-group" id="result">
+                        </ul>
+                    </div>
                 </form>
             </div>
         </div>
-        <div class="row">
-            <div class='cl-sm-12'>
-                <div id='res'></div>
-            </div>
+        <div class="row" id="validateOTP">
+            <form id="validateOtp" name="validateOtp" method="post" style="padding:12px">
+                <fieldset>
+                    <div class="form-group">
+                        <input type="text" name="otpnum" id="otpnum" class="form-control input-lg" required="true"
+                            autofocus="true" placeholder="Enter OTP" />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Submit" />
+                        </div>
+                        <div class="col-md-9">
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
         </div>
     </div>
 
@@ -53,9 +75,67 @@
     </div>
 
 </body>
-<script async src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script async src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script async src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script async src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        document.getElementById("validateOTP").style.display = "none";
+
+        $("#generateOtp").submit(function (event) {
+            //stop submit the form, we will post it manually.
+            event.preventDefault();
+            var data = 'email=' + $("#email").val();
+            //alert(data);
+            if (undefined !== $("#email").val() && $("#email").val() !== null && $("#email").val() !== '') {
+                $.ajax({
+                    type: "GET",
+                    url: "/generateOTP",
+                    data: data,
+                    dataType: 'text',
+                    cache: false,
+                    timeout: 600000,
+                    success: function (response) {
+                        if (response === "Success") {
+                            alert("OTP Sent successfully");
+                            document.getElementById("validateOTP").style.display = "block";
+                        } else {
+                            alert(response);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert(xhr.responseText);
+                    }
+                });
+            } else {
+                alert("Please enter the respective Email ID");
+            }
+
+        });
+
+        $("#validateOtp").submit(function (event) {
+            //stop submit the form, we will post it manually.
+            event.preventDefault();
+            var data = 'otpnum=' + $("#otpnum").val();
+            alert(data);
+            $.ajax({
+                type: "GET",
+                url: "/validateOtp",
+                data: data,
+                dataType: 'text',
+                cache: false,
+                timeout: 600000,
+                success: function (response) {
+                    alert(response);
+                },
+                error: function (xhr, status, error) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
 
 </html>
