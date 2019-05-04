@@ -28,10 +28,8 @@
                         </div>
                     </div>
                     <br />
-                    <button type="submit" class="btn btn-primary" id="fetch">Generate OTP</button>
-                    <div class="panel-body">
-                        <ul class="list-group" id="result">
-                        </ul>
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-primary" id="fetch">Generate OTP</button>
                     </div>
                 </form>
             </div>
@@ -39,14 +37,19 @@
         <div class="row" id="validateOTP">
             <form id="validateOtp" name="validateOtp" method="post" style="padding:12px">
                 <fieldset>
-                    <div class="form-group">
-                        <input type="text" name="otpnum" id="otpnum" class="form-control input-lg" required="true"
-                            autofocus="true" placeholder="Enter OTP" />
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="form-group col-md-6">
+                                <input type="text" name="otpnum" id="otpnum" class="form-control" required="true"
+                                    autofocus="true" placeholder="Enter OTP" />
+                            </div>
+                            <div class="col-md-6">
+                            </div>
+                        </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-3">
-                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Submit" />
+                            <input type="submit" class="btn btn-primary btn-block" value="Submit" />
                         </div>
                         <div class="col-md-9">
                         </div>
@@ -107,6 +110,7 @@
                         if (response === "Success") {
                             alert("OTP Sent successfully");
                             document.getElementById("validateOTP").style.display = "block";
+                            document.getElementById("generateOTP").style.display = "none";
                         } else {
                             alert(response);
                         }
@@ -135,13 +139,13 @@
                     cache: false,
                     timeout: 600000,
                     success: function (response) {
-                        if (response === 'Success') {
+                        if (response.split(',')[0] === 'Success') {
                             alert("OTP Validated successfully")
                             document.getElementById("generateAuthKey").style.display = "block";
                         } else {
                             alert("OTP Invalid. Please Enter a valid OTP to generate AuthKey");
                         }
-                        alert(response);
+                        //alert(response);
                     },
                     error: function (xhr, status, error) {
                         alert(xhr.responseText);

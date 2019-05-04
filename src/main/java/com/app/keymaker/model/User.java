@@ -22,6 +22,10 @@ public class User implements Serializable {
     public User() {
     }
 
+    public String getID() {
+        return id;
+    }
+
     public User(String email, String otp) {
         this.email = email;
         this.otp = otp;
@@ -29,6 +33,18 @@ public class User implements Serializable {
 
     public String getOTP() {
         return otp;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setOTP(String otp) {
+        this.otp = otp;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
 }
