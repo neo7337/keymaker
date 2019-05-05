@@ -30,7 +30,7 @@ import com.mongodb.DBCollection;
 @Controller
 public class OtpController {
     public static ArrayList<Block> blockchain = new ArrayList<Block>();
-    Block currentBlock ;
+    Block currentBlock;
     public static int difficulty = 0;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -58,17 +58,33 @@ public class OtpController {
             query.addCriteria(Criteria.where("email").is(username));
             Update update = new Update();
             update.set("otp", otp);
+            boolean saveFlag = false;
+            int count = 0;
             // repository.upsert(query, User.class);
             for (User user : repository.findAll()) {
                 // System.out.println(user.getOTP());
+                count++;
                 if (String.valueOf(email).equalsIgnoreCase(user.getEmail())) {
                     repository.deleteById(user.getID());
+                    logger.info("Updating Node : " + username + " " + otp);
                     repository.save(new User(username, String.valueOf(otp)));
+                    saveFlag = false;
                     break;
                 } else {
+                    saveFlag = true;
+                }
+            }
+
+            if (count == 0) {
+                logger.info("Saving New Node : " + username + " " + otp);
+                repository.save(new User(username, String.valueOf(otp)));
+            } else {
+                if (saveFlag == true) {
+                    logger.info("Else Saving New Node : " + username + " " + otp);
                     repository.save(new User(username, String.valueOf(otp)));
                 }
             }
+
             return "Success";
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,19 +117,20 @@ public class OtpController {
         int count = 0;
         KeyGenerator keyGen = new KeyGenerator();
         String generatedKey = keyGen.randomKeyGenerator();
-        Map<String,String> newUserData = new HashMap<String, String>();
-        newUserData.put(email,otp);
-        Transaction newTransaction = new Transaction(newWallet.publicKey,customerWallet.publicKey,(HashMap<String, String>)newUserData);
+        Map<String, String> newUserData = new HashMap<String, String>();
+        newUserData.put(email, generatedKey);
+        Transaction newTransaction = new Transaction(newWallet.publicKey, customerWallet.publicKey,
+                (HashMap<String, String>) newUserData);
         newTransaction.generateSignature(newWallet.privateKey);
         newTransaction.transactionId = "0";
-        newTransaction.outputs.add(new TransactionOutput(newTransaction.reciepient, (HashMap<String, String>) newTransaction.userData, newTransaction.transactionId));
+        newTransaction.outputs.add(new TransactionOutput(newTransaction.reciepient,
+                (HashMap<String, String>) newTransaction.userData, newTransaction.transactionId));
         if (!newTransaction.verifiySignature())
             return FAIL;
-        if (count == 0){
+        if (count == 0) {
             block = new Block("0");
-            currentBlock = block ;
-        }
-        else {
+            currentBlock = block;
+        } else {
             block = new Block(currentBlock.previousHash);
             currentBlock = block;
         }
@@ -121,7 +138,7 @@ public class OtpController {
         block.addTransaction(newTransaction);
         addBlock(currentBlock);
 
-        if (isChainValid()){
+        if (isChainValid()) {
             return generatedKey;
         }
         return FAIL;
@@ -137,33 +154,33 @@ public class OtpController {
         Block previousBlock;
         String hashTarget = new String(new char[difficulty]).replace('\0', '0');
 
-        for(int i=1; i < blockchain.size(); i++) {
+        for (int i = 1; i < blockchain.size(); i++) {
 
             currentBlock = blockchain.get(i);
-            previousBlock = blockchain.get(i-1);
-            if(!previousBlock.hash.equals(currentBlock.previousHash) ) {
+            previousBlock = blockchain.get(i - 1);
+            if (!previousBlock.hash.equals(currentBlock.previousHash)) {
                 System.out.println("#Previous Hashes not equal");
                 return false;
             }
-            if(!currentBlock.hash.substring( 0, difficulty).equals(hashTarget)) {
+            if (!currentBlock.hash.substring(0, difficulty).equals(hashTarget)) {
                 System.out.println("#This block hasn't been mined");
                 return false;
             }
 
             TransactionOutput tempOutput;
-            for(int t=0; t <currentBlock.transactions.size()-1; t++) {
+            for (int t = 0; t < currentBlock.transactions.size() - 1; t++) {
                 Transaction currentTransaction = currentBlock.transactions.get(t);
 
-                if(!currentTransaction.verifiySignature()) {
+                if (!currentTransaction.verifiySignature()) {
                     System.out.println("#Signature on Transaction(" + t + ") is Invalid");
                     return false;
                 }
 
-                if( currentTransaction.outputs.get(0).reciepient != currentTransaction.reciepient) {
+                if (currentTransaction.outputs.get(0).reciepient != currentTransaction.reciepient) {
                     System.out.println("#Transaction(" + t + ") output reciepient is not who it should be");
                     return false;
                 }
-                if( currentTransaction.outputs.get(1).reciepient != currentTransaction.sender) {
+                if (currentTransaction.outputs.get(1).reciepient != currentTransaction.sender) {
                     System.out.println("#Transaction(" + t + ") output 'change' is not sender.");
                     return false;
                 }
