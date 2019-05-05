@@ -30,6 +30,8 @@ import com.mongodb.DBCollection;
 @Controller
 public class OtpController {
     public static ArrayList<Block> blockchain = new ArrayList<Block>();
+    int count1 = 0;
+    String previous;
     Block currentBlock;
     public static int difficulty = 0;
 
@@ -114,7 +116,7 @@ public class OtpController {
         String FAIL = "Fail";
         Block block;
         Wallet newWallet = new Wallet();
-        int count = 0;
+
         KeyGenerator keyGen = new KeyGenerator();
         String generatedKey = keyGen.randomKeyGenerator();
         Map<String, String> newUserData = new HashMap<String, String>();
@@ -127,18 +129,28 @@ public class OtpController {
                 (HashMap<String, String>) newTransaction.userData, newTransaction.transactionId));
         if (!newTransaction.verifiySignature())
             return FAIL;
-        if (count == 0) {
+
+        // System.out.println("COUNT VALUE : " + count1);
+        if (count1 == 0) {
             block = new Block("0");
             currentBlock = block;
+            // System.out.println("Current Hash : " + currentBlock.hash + " PreviousHash : "
+            // + currentBlock.previousHash);
         } else {
-            block = new Block(currentBlock.previousHash);
+            // System.out.println("Previous " + previous);
+            block = new Block(previous);
             currentBlock = block;
+            // System.out.println("else Current Hash : " + currentBlock.hash + "
+            // PreviousHash : " + currentBlock.previousHash);
         }
-
+        previous = currentBlock.hash;
+        count1++;
+        // System.out.println("Current Hash : " + block.hash + " PreviousHash : " +
+        // block.previousHash);
         block.addTransaction(newTransaction);
         addBlock(currentBlock);
 
-        if (isChainValid()) {
+        if (isChainValid(currentBlock)) {
             return generatedKey;
         }
         return FAIL;
@@ -149,9 +161,9 @@ public class OtpController {
         blockchain.add(newBlock);
     }
 
-    public static Boolean isChainValid() {
-        Block currentBlock;
-        Block previousBlock;
+    public static Boolean isChainValid(Block block) {
+        Block currentBlock = block;
+        Block previousBlock = block;
         String hashTarget = new String(new char[difficulty]).replace('\0', '0');
 
         for (int i = 1; i < blockchain.size(); i++) {
