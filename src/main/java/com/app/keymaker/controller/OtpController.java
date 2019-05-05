@@ -65,6 +65,8 @@ public class OtpController {
                     repository.deleteById(user.getID());
                     repository.save(new User(username, String.valueOf(otp)));
                     break;
+                } else {
+                    repository.save(new User(username, String.valueOf(otp)));
                 }
             }
             return "Success";
