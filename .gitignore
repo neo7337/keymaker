@@ -27,3 +27,7 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+
+### Node Modules ###
+node_modules
+client/node_modules
