@@ -1,13 +1,15 @@
 package com.app.keymaker.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.stereotype.Controller;
+import java.util.Date;
 
-@Controller
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
 public class HomeController {
-    @GetMapping("/")
+    @GetMapping("/index")
     public String homePage() {
-        return "index";
+        return "Hello, the time at the server is now " + new Date() + "\n";
     }
 
     @GetMapping("/keygen")
