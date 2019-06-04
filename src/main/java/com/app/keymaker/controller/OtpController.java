@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ import com.app.keymaker.model.User;
 import com.app.keymaker.model.UserRepository;
 import com.app.keymaker.service.*;
 import com.app.keymaker.utility.*;
+import com.mongodb.DBCollection;
 
 @Controller
 public class OtpController {
@@ -110,6 +112,7 @@ public class OtpController {
     public String generateAuthKey(String email, String otp) {
 
         Wallet customerWallet = new Wallet();
+        String SUCCESS = "Success";
         String FAIL = "Fail";
         Block block;
         Wallet newWallet = new Wallet();
@@ -176,6 +179,7 @@ public class OtpController {
                 return false;
             }
 
+            TransactionOutput tempOutput;
             for (int t = 0; t < currentBlock.transactions.size() - 1; t++) {
                 Transaction currentTransaction = currentBlock.transactions.get(t);
 
@@ -192,7 +196,9 @@ public class OtpController {
                     System.out.println("#Transaction(" + t + ") output 'change' is not sender.");
                     return false;
                 }
+
             }
+
         }
         System.out.println("Blockchain is valid");
         return true;
