@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/keymaker
     docker:
-      - image: neo73/keymkaer:v1.0
+      - image: neo73/keymaker:v1.0
     steps:
       - checkout
       - restore_cache:
