@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: keymaker/openjdk:8-jdk
+      - image: neo73/keymkaer:v1.0
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
