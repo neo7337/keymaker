@@ -2,8 +2,12 @@ version: 2
 jobs:
   build:
     working_directory: ~/keymaker
+    shell: /bin/bash
     docker:
       - image: neo73/keymaker:v1.0
+    environment:
+      CIRCLE_ARTIFACTS: /tmp/keymaker-artifacts
+      CIRCLE_TEST_REPORTS: /tmp/keymaker-test-results
     steps:
       - checkout
       - restore_cache:
