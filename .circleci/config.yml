@@ -12,7 +12,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.m2
-            key: keymaker-{{checksum "pom.xml"}}
+          key: keymaker-{{checksum "pom.xml"}}
       - run: mvn package
       - store_test_results:
           path: target/reports
