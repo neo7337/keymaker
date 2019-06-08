@@ -3,7 +3,7 @@ import React from "react";
 export default class Keygen extends React.Component {
     render() {
         return (
-            <div>
+            <div class="container">
                 <div class='row' id="generateOTP">
                     <div class='col-sm-12'>
                         <form id="generateOtp" name="generateOTP" method="post" style={{ padding: '12px' }}>

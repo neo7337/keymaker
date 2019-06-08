@@ -8,14 +8,14 @@ export default class Content extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentPage: 'homePage'
+            currPage: 'homePage'
         };
     }
 
     getPage(currPage) {
         const pages = {
-            homePage: <Homepage></Homepage>,
-            keyGen: <Keygen></Keygen>
+            homePage: <Homepage togglePage={this.togglePage.bind(this)}></Homepage>,
+            keyGen: <Keygen togglePage={this.togglePage}></Keygen>
         }
         return pages[currPage];
     }
@@ -27,7 +27,7 @@ export default class Content extends React.Component {
     render() {
         return (
             <div>
-                {this.getPage(this.state.currentPage)}
+                {this.getPage(this.state.currPage)}
             </div>
         );
     }
