@@ -3,9 +3,9 @@ import React from "react";
 
 export default class Homepage extends React.Component {
 
-    constructor(props) {
+    /* constructor(props) {
         super(props);
-    }
+    } */
 
     handlePage(pageCategory) {
         this.props.togglePage(pageCategory);
