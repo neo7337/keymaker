@@ -12,7 +12,7 @@ public class HomeController {
         return "Hello, the time at the server is now " + new Date() + "\n";
     }
 
-    @GetMapping("/keygen")
+    @GetMapping("/generateKey")
     public String keyGen() {
         return "keyGen";
     }

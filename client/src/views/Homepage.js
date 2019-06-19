@@ -1,5 +1,6 @@
 import React from "react";
-
+import { Link } from 'react-router-dom'
+import { Button } from 'semantic-ui-react'
 
 export default class Homepage extends React.Component {
 
@@ -7,14 +8,14 @@ export default class Homepage extends React.Component {
         super(props);
     } */
 
-    handlePage(pageCategory) {
+    /* handlePage(pageCategory) {
         this.props.togglePage(pageCategory);
-    }
+    } */
 
     render() {
         return (
             <div>
-                <div class="container" id="about">
+                <div class="container" id="homepage">
                     <div class='row'>
                         <div class='col-sm-6'>
                             <form style={{ padding: '12px' }}>
@@ -25,7 +26,7 @@ export default class Homepage extends React.Component {
                                     <div class="card-body">
                                         <h5 class="card-title">Auth key Generation</h5>
                                         <p class="card-text">Proceed further to generate the activation code.</p>
-                                        <a onClick={() => this.handlePage('keyGen')} class="btn btn-primary">Proceed</a>
+                                        <Link to="/keygen"><Button>Proceed</Button></Link>
                                     </div>
                                 </div>
                                 <br />
