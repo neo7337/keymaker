@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import { Menu, Segment } from 'semantic-ui-react'
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 import './index.css';
-import * as serviceWorker from './serviceWorker';
-import Users from './users'
 import Homepage from './views/Homepage'
 import Keygen from './views/Keygen'
 import Footer from './components/Footer'
@@ -18,10 +16,6 @@ const routing = (
                         <i>Keymaker</i>
                     </Menu.Item>
                 </Link>
-                <Link to="/users">
-                    <Menu.Item
-                        name='Users' />
-                </Link>
                 <Menu.Menu position='right'>
                     <Menu.Item
                         name='logout'
@@ -29,7 +23,6 @@ const routing = (
                 </Menu.Menu>
             </Menu>
             <Route exact path="/" component={Homepage} />
-            <Route path="/users" component={Users} />
             <Route path="/keygen" component={Keygen} />
             <Footer></Footer>
         </div>
