@@ -4,11 +4,12 @@ import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 import Homepage from './views/Homepage'
 import Keygen from './views/Keygen'
 import Footer from './components/Footer'
+import HeaderNav from './components/HeaderNav'
 
 const routing = (
     <Router>
         <div>
-            <Route exact path="/" component={Homepage} />
+            <HeaderNav></HeaderNav>
             <Route path="/keygen" component={Keygen} />
             <Footer></Footer>
         </div>

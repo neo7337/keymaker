@@ -1,184 +1,19 @@
 import React, { Component } from 'react';
 import { Button, Container, Divider, Grid, Header, Icon, Image, List, Menu, Responsive, Segment, Sidebar, Visibility, } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
+import { Route, Link as RouteLink, BrowserRouter as Router } from 'react-router-dom'
 import * as Scroll from 'react-scroll'
-
-var Link = Scroll.Link;
-var DirectLink = Scroll.DirectLink;
-var Element = Scroll.Element;
-var Events = Scroll.Events;
-var scroll = Scroll.animateScroll;
-var scrollSpy = Scroll.scrollSpy;
-
-const getWidth = () => {
-    const isSSR = typeof window === 'undefined'
-    return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth
-}
-
-const HomepageHeading = ({ mobile }) => (
-    <Container text>
-        <Header
-            as='h1'
-            content='the keymaker'
-            inverted
-            style={{
-                fontSize: mobile ? '2em' : '4em',
-                fontWeight: 'normal',
-                marginBottom: 0,
-                marginTop: mobile ? '1.5em' : '3em',
-            }}
-        />
-        <Header
-            as='h2'
-            content='Do whatever you want when you want to.'
-            inverted
-            style={{
-                fontSize: mobile ? '1.5em' : '1.7em',
-                fontWeight: 'normal',
-                marginTop: mobile ? '0.5em' : '1.5em',
-            }}
-        />
-        <Button primary size='huge'>
-            Get Started
-      <Icon name='right arrow' />
-        </Button>
-    </Container>
-)
-
-class DesktopContainer extends Component {
-
-    constructor(props) {
-        super(props);
-        this.scrollToTop = this.scrollToTop.bind(this);
-    }
-    componentDidMount() {
-        Events.scrollEvent.register('begin', function () {
-            console.log("begin", arguments);
-        });
-        Events.scrollEvent.register('end', function () {
-            console.log("end", arguments);
-        });
-        scrollSpy.update();
-    }
-    componentWillUnmount() {
-        Events.scrollEvent.remove('begin');
-        Events.scrollEvent.remove('end');
-    }
-    state = {}
-
-    hideFixedMenu = () => this.setState({ fixed: false })
-    showFixedMenu = () => this.setState({ fixed: true })
-
-    scrollToTop = () => {
-        scroll.scrollToTop();
-    };
-    render() {
-        const { children } = this.props
-        const { fixed } = this.state
-
-        return (
-            <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
-                <Visibility
-                    once={false}
-                    onBottomPassed={this.showFixedMenu}
-                    onBottomPassedReverse={this.hideFixedMenu}>
-                    <Segment
-                        inverted
-                        textAlign='center'
-                        style={{ minHeight: 700, padding: '1em 0em' }}
-                        vertical>
-                        <Menu
-                            fixed={fixed ? 'top' : null}
-                            inverted={!fixed}
-                            pointing={!fixed}
-                            secondary={!fixed}
-                            size='large'>
-                            <Container>
-                                <Menu.Item as='a' active onClick={this.scrollToTop}>Home</Menu.Item>
-                                <Link to="products"><Menu.Item as='a'>Products</Menu.Item></Link>
-                                <Menu.Item as='a'>Contact Us</Menu.Item>
-                            </Container>
-                        </Menu>
-                        <HomepageHeading />
-                    </Segment>
-                </Visibility>
-                {children}
-            </Responsive>
-        )
-    }
-}
-
-DesktopContainer.propTypes = {
-    children: PropTypes.node,
-}
-
-
-
-class MobileContainer extends Component {
-    state = {}
-
-    handleSidebarHide = () => this.setState({ sidebarOpened: false })
-
-    handleToggle = () => this.setState({ sidebarOpened: true })
-
-    render() {
-        const { children } = this.props
-        const { sidebarOpened } = this.state
-
-        return (
-            <Responsive
-                as={Sidebar.Pushable}
-                getWidth={getWidth}
-                maxWidth={Responsive.onlyMobile.maxWidth}>
-                <Sidebar
-                    as={Menu}
-                    animation='push'
-                    inverted
-                    onHide={this.handleSidebarHide}
-                    vertical
-                    visible={sidebarOpened}>
-                    <Menu.Item as='a' active>Home</Menu.Item>
-                    <Menu.Item as='a'>Products</Menu.Item>
-                    <Menu.Item as='a'>Contact Us</Menu.Item>
-                </Sidebar>
-
-                <Sidebar.Pusher dimmed={sidebarOpened}>
-                    <Segment
-                        inverted
-                        textAlign='center'
-                        style={{ minHeight: 350, padding: '1em 0em' }}
-                        vertical>
-                        <HomepageHeading mobile />
-                    </Segment>
-                    {children}
-                </Sidebar.Pusher>
-            </Responsive>
-        )
-    }
-}
-
-MobileContainer.propTypes = {
-    children: PropTypes.node,
-}
-
-const ResponsiveContainer = ({ children }) => (
-    <div>
-        <DesktopContainer>{children}</DesktopContainer>
-        <MobileContainer>{children}</MobileContainer>
-    </div>
-)
-
-ResponsiveContainer.propTypes = {
-    children: PropTypes.node,
-}
+import Keygen from './Keygen'
+import HomepageSegment from '../components/Homepage/HomepageSegment'
+import HeaderNav from '../components/HeaderNav'
 
 export default class Homepage extends React.Component {
 
     render() {
         return (
             <div>
-                <ResponsiveContainer>
-                    <Segment style={{ padding: '8em 0em' }} vertical name="products">
+                <HeaderNav>
+                    {/* <Segment style={{ padding: '8em 0em' }} vertical name="products">
                         <Grid container stackable verticalAlign='middle'>
                             <Grid.Row>
                                 <Grid.Column width={8}>
@@ -198,7 +33,7 @@ export default class Homepage extends React.Component {
                             </Grid.Row>
                             <Grid.Row>
                                 <Grid.Column textAlign='center'>
-                                    <Button size='huge'>Check Them Out</Button>
+                                    <RouteLink to="keygen"><Button size='huge'>Check Them Out</Button></RouteLink>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
@@ -247,8 +82,8 @@ export default class Homepage extends React.Component {
                             <Button as='a' size='large'>
                                 I'm Still Quite Interested</Button>
                         </Container>
-                    </Segment>
-                </ResponsiveContainer>
+                    </Segment> */}
+                </HeaderNav>
             </div>
         );
     }
