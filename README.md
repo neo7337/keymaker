@@ -1,7 +1,7 @@
 # keymaker
 Work in progress..
 
-Maven Build Commmands
+Maven Build Commmand
 -- mvn clean install
 
 Maven Run Command
