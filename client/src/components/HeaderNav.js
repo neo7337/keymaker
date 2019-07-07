@@ -179,8 +179,8 @@ export default class HeaderNav extends React.Component {
         return (
             <ResponsiveContainer>
                 {/* <HomepageSegment></HomepageSegment> */}
-                <Route path="/" component={HomepageSegment}></Route>
-                <Route path="keygen" component={Keygen}></Route>
+                <Route exact path="/" component={HomepageSegment}></Route>
+                <Route path="/keygen" component={Keygen}></Route>
             </ResponsiveContainer>
         )
     }
